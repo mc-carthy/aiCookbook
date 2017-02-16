@@ -23,13 +23,11 @@ public class Align : AgentBehaviour {
 
         if (rotationSize > slowRadius)
         {
-            // targetRotation = agent.maxRotation;
-            targetRotation = maxRotation;
+            targetRotation = agent.maxRotation;
         }
         else
         {
-            // targetRotation = agent.maxRotation * rotationSize / slowRadius;
-            targetRotation = maxRotation * rotationSize / slowRadius;
+            targetRotation = agent.maxRotation * rotationSize / slowRadius;
         }
 
         targetRotation *= rotation / rotationSize;
@@ -39,12 +37,10 @@ public class Align : AgentBehaviour {
 
         float angularAccel = Mathf.Abs (steering.angular);
 
-        // if (angularAccel > agent.maxAngularAccel)
-        if (angularAccel > maxAngularAccel)
+        if (angularAccel > agent.maxAngularAccel)
         {
             steering.angular /= angularAccel;
-            // steering.angular *= agent.maxAngularAccel;
-            steering.angular *= maxAngularAccel;
+            steering.angular *= agent.maxAngularAccel;
         }
 
         return steering;

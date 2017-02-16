@@ -5,11 +5,6 @@ public class AgentBehaviour : MonoBehaviour {
     public GameObject target;
     protected Agent agent;
 
-    public float maxSpeed;
-    public float maxAccel;
-    public float maxRotation;
-    public float maxAngularAccel;
-
     public virtual void Awake ()
     {
         agent = GetComponent<Agent> ();
