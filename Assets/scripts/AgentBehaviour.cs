@@ -42,4 +42,13 @@ public class AgentBehaviour : MonoBehaviour {
         return rotation;
     }
 
+    public Vector3 GetOriAsVec (float orientation)
+    {
+        Vector3 vector = Vector3.zero;
+        vector.x = Mathf.Sin (orientation * Mathf.Deg2Rad);
+        vector.z = Mathf.Cos (orientation * Mathf.Deg2Rad);
+
+        return vector.normalized;
+    }
+
 }
