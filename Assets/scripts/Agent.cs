@@ -60,9 +60,10 @@ public class Agent : MonoBehaviour {
         steering = new Steering ();
     }
 
-    public void SetSteering (Steering steering)
+    public void SetSteering (Steering steering, float weight)
     {
-        this.steering = steering;
+        this.steering.linear += (weight * steering.linear);
+        this.steering.angular += (weight * steering.angular);
     }
 
 }

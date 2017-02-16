@@ -4,6 +4,7 @@ public class AgentBehaviour : MonoBehaviour {
 
     public GameObject target;
     protected Agent agent;
+    public float weight = 1f;
 
     public virtual void Awake ()
     {
@@ -12,7 +13,7 @@ public class AgentBehaviour : MonoBehaviour {
 
     public virtual void Update ()
     {
-        agent.SetSteering (GetSteering ());
+        agent.SetSteering (GetSteering (), weight);
     }
 
     public virtual Steering GetSteering ()
