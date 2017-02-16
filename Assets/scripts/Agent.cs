@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class Agent : MonoBehaviour {
 
@@ -10,11 +11,14 @@ public class Agent : MonoBehaviour {
     public float rotation;
     public Vector3 velocity;
     protected Steering steering;
+    public float priorityThreshold = 0.2f;
+    private Dictionary<int, List<Steering>> groups;
 
     private void Start ()
     {
         velocity = Vector3.zero;
         steering = new Steering ();
+        groups = new Dictionary<int, List<Steering>> ();
     }
 
     public virtual void Update ()
@@ -38,6 +42,8 @@ public class Agent : MonoBehaviour {
 
     public virtual void LateUpdate ()
     {
+        steering = GetPrioritySteering ();
+        groups.Clear ();
         velocity += steering.linear * Time.deltaTime;
         rotation += steering.angular * Time.deltaTime;
 
@@ -60,10 +66,35 @@ public class Agent : MonoBehaviour {
         steering = new Steering ();
     }
 
-    public void SetSteering (Steering steering, float weight)
+    public void SetSteering (Steering steering, int priority)
     {
-        this.steering.linear += (weight * steering.linear);
-        this.steering.angular += (weight * steering.angular);
+        if (!groups.ContainsKey (priority))
+        {
+            groups.Add (priority, new List<Steering> ());
+        }
+        groups [priority].Add (steering);
+    }
+
+    private Steering GetPrioritySteering ()
+    {
+        Steering steering = new Steering ();
+        float sqrThreshold = priorityThreshold * priorityThreshold;
+
+        foreach (List<Steering> group in groups.Values)
+        {
+            steering = new Steering ();
+            foreach (Steering singleSteering in group)
+            {
+                steering.linear += singleSteering.linear;
+                steering.angular += singleSteering.angular;
+            }
+            if (steering.linear.sqrMagnitude > sqrThreshold ||
+                Mathf.Abs (steering.angular) > priorityThreshold)
+                {
+                    return steering;
+                }
+        }
+        return steering;
     }
 
 }
